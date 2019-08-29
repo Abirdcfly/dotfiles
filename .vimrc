@@ -91,10 +91,12 @@ set cursorline "光标所在行高亮
 "set mapleader
 let mapleader = ","
 
-"normal模式,w保存文件
+"normal模式,w保存文件q退出
 nnoremap <leader>w <esc>:w<cr>
-"insert模式,w保存文件
+nnoremap <leader>q <esc>:q<cr>
+"insert模式,w保存文件q退出
 inoremap <leader>w <ESC>:w<CR>
+inoremap <leader>q <ESC>:q<CR>
 "insert模式,jj 退出到normal模式
 inoremap jj <ESC>
 
