@@ -126,7 +126,6 @@ prompt_svn() {
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias proxy='export http_proxy=http://127.0.0.1:1081;export https_proxy=$http_proxy;export all_proxy=$http_proxy'
 export PATH=${PATH}:/usr/local/sbin
-#alias t="sshpass -p '' ssh -p 50023 -o ServerAliveInterval=60 root@ip"
 alias tbjconfig="ssh tbjconfig"
 alias disproxy='unset http_proxy https_proxy all_proxy'
 
@@ -163,8 +162,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 export GOPROXY=https://goproxy.cn
 
 # Customise the Powerlevel9k prompts
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time battery ssh dir vcs status)  #左边符号
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()    # 右边为空
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time battery ssh dir vcs status background_jobs_joined command_execution_time go_version)  #左边符号
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode)    # 右边显示zsh 的vi_mode
+POWERLEVEL9K_STATUS_OK=false  #status正常是大部分情况,不需要显示图标
+POWERLEVEL9K_VI_INSERT_MODE_STRING='' #正常情况下zsh都在Insert模式下.不需要显示INSERT干扰注意力
 POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD=90  # 电量90以下在显示
 
 source $(dirname $(gem which colorls))/tab_complete.sh  # https://github.com/athityakumar/colorls
