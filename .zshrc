@@ -142,7 +142,6 @@ alias buu="brew update && brew upgrade"
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias v="vim"
-alias sourcez="source ~/.zshrc"
 setopt HIST_IGNORE_SPACE
 alias ping="prettyping --nolegend"
 export PATH="/usr/local/opt/ipython@5/bin:$PATH"
@@ -156,7 +155,6 @@ alias tf="open -a Finder ./"
 alias cman='man -M /usr/local/share/man/zh_CN'
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles #替换为清华源
 alias vimtmux="vim ~/.tmux.conf"
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export GOPROXY=https://goproxy.cn
@@ -173,4 +171,5 @@ alias lc='colorls -lA --sd'
 alias rm="rm -i"
 alias c="code ."
 alias gc="git cz"
-alias cl="clear"
+alias cl="source ~/.zshrc && clear"
+alias up="upgrade_oh_my_zsh; brew update -v; brew upgrade -v; brew cask upgrade -v; brew cleanup -v"
