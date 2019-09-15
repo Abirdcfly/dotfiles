@@ -32,6 +32,9 @@ Plug 'MattesGroeger/vim-bookmarks' "bookmarks 可视化
 Plug 'lyokha/vim-xkbswitch' "切换到normal自动转为英文输入法
 Plug 'ntpeters/vim-better-whitespace' "高亮多余空格,保存时自动修复
 Plug 'hotoo/pangu.vim' "中文markdown美化
+Plug 'tpope/vim-repeat' "用.重复plug里的命令
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!']  }  "WhichKey显示key map
+Plug 'honza/vim-snippets' "snippets提供
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "异步补全
 
@@ -306,6 +309,9 @@ let g:pymode_options_max_line_length = 120
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 nmap <leader><leader> <Plug>(easymotion-overwin-f2)
 
+"coc 设置
+let g:coc_global_extensions =['coc-snippets','coc-python','coc-highlight','coc-lists','coc-tabnine','coc-yank']
+
 "coc-snippets
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -328,6 +334,12 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 let g:coc_snippet_next = '<tab>'
+
+"coc-highlight
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+"coc-prettier
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 "vista.vim 设置
 "状态栏显示目前函数名
@@ -375,3 +387,7 @@ nmap <C-d> :GitGutterLineHighlightsToggle <CR>
 
 "pangu.vim 设置
 autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing()
+
+"WhichKey ]作为触发键
+autocmd User vim-which-key call which_key#register(',', "g:which_key_map")
+nnoremap <silent> ] :<c-u>WhichKey ''<CR>

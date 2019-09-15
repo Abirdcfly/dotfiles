@@ -1,0 +1,35 @@
+{
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "coc.preferences.colorSupport": true,
+  "suggest.enablePreview": true,
+  "suggest.echodocSupport": true,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  },
+  "snippets.ultisnips.directories": [
+    "UltiSnips"
+  ],
+  "list.normalMappings": {
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "t": "action:tabe",
+    "v": "action:vsplit",
+    "s": "action:split",
+    "d": "expr:GetDeleteAction"
+  },
+  "list.insertMappings": {
+    "<CR>": "do:defaultaction",
+    "<C-r>": "do:refresh",
+    "<C-g>": "do:switch",
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "<C-t>": "action:tabe",
+    "<C-v>": "action:vsplit",
+    "<C-s>": "action:split",
+    "<C-w>": "command:wincmd k"
+  }
+}
