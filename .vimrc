@@ -141,6 +141,8 @@ set pastetoggle=<F8> "F8是粘贴快捷键。tmux里不启用paste模式会错�
 
 ",a退出quickfix和location list
 nnoremap <leader>a :lcl<CR> :cclose<CR>
+autocmd bufenter * if winnr("$") == 1 && (&buftype == "quickfix" || &buftype == "locationlist") | q | endif
+
 "自动进入文件路径
 autocmd bufenter * silent! lcd %:p:h
 
@@ -204,7 +206,6 @@ let g:airline_powerline_fonts = 1
 " vim-go 设置
 let g:go_fmt_command = "goimports"  "fmt时自动修改import,增减引用库
 let g:go_autodetect_gopath = 1
-let g:gp_list_type = "quickfix"
 
 "vim-go 高亮显示配置
 let g:go_highlight_types = 1
@@ -219,6 +220,8 @@ let g:go_metalinter_autosave = 1  "保存时自动lint
 let g:go_auto_type_info = 1  "自动显示go info
 let g:go_auto_sameids = 1  "自动高亮同名变量
 let g:go_def_mode = 'godef'
+" let g:go_def_mode='gopls'
+let g:go_info_mode='gocode'
 
 ":GoDeclsDir快捷键ctrl-g 用途是显示当前文件夹所有函数
 nmap <C-g> :GoDeclsDir<cr>
