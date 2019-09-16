@@ -35,6 +35,8 @@ Plug 'hotoo/pangu.vim' "中文markdown美化
 Plug 'tpope/vim-repeat' "用.重复plug里的命令
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!']  }  "WhichKey显示key map
 Plug 'honza/vim-snippets' "snippets提供
+Plug 'rizzatti/dash.vim' "vim 直接查dash
+Plug 'luochen1990/rainbow' "彩虹括号
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "异步补全
 
@@ -101,13 +103,28 @@ nnoremap <leader>q <esc>:q<cr>
 inoremap <leader>w <ESC>:w<CR>
 inoremap <leader>q <ESC>:q<CR>
 "insert模式,jj 退出到normal模式
-inoremap jj <ESC>
+inoremap jj <ESC>`^
 
 "设置多窗口快速跳转快捷键
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 nnoremap <c-h> <c-w><c-h>
+
+function! HideNumber()
+  if(&relativenumber)
+    set relativenumber!
+    if (&number)
+      set number!
+    endif
+  else
+    set number!
+  endif
+  set number?
+endfunc
+
+noremap <F2> :call HideNumber()<CR>
+noremap! <F2> <C-[>:call HideNumber()<CR>a
 
 " 代码折叠设置
 set foldmethod=indent
@@ -123,8 +140,7 @@ set backspace=2
 set pastetoggle=<F8> "F8是粘贴快捷键。tmux里不启用paste模式会错位
 
 ",a退出quickfix和location list
-nnoremap <leader>a :cclose<CR>
-nnoremap <leader>a :lcl<CR>
+nnoremap <leader>a :lcl<CR> :cclose<CR>
 "自动进入文件路径
 autocmd bufenter * silent! lcd %:p:h
 
@@ -268,8 +284,8 @@ au filetype go nmap <f12> <plug>(go-debug-stepout)
 
 "nerdtree设置
 "autocmd vimenter * NERDTree
-nnoremap <f7> :NERDTreeToggle<CR>
-let g:NERDTreeWinSize=20  "目录宽度
+nnoremap <f6> :NERDTreeToggle<CR>
+let g:NERDTreeWinSize=19  "目录宽度
 "当最后的窗口是nerdtree时，自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeIgnore=['\.svn$', '\.git$', '\.pyc$', '\.vscode', '__pycache__'] "忽略特定文件类型
@@ -296,8 +312,8 @@ endif
 nnoremap <silent> <C-a> :Ag<CR>
 
 "pymode配置
-let g:pymode_python = 'python3'
-let g:pymode_trim_whitespaces = 1 "自动去空格
+let g:pymode_python = 'python2'
+let g:pymode_trim_whitespaces = 0 "自动去空格
 let g:pymode_doc = 1
 let g:pymode_doc_bind = 'K'
 let g:pymode_lint = 1
@@ -391,3 +407,31 @@ autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing(
 "WhichKey ]作为触发键
 autocmd User vim-which-key call which_key#register(',', "g:which_key_map")
 nnoremap <silent> ] :<c-u>WhichKey ''<CR>
+
+"Dash.vim
+nnoremap <silent> <leader>d <Plug>DashSearch
+
+"rainbow
+let g:rainbow_active = 0
+let g:rainbow_conf = {
+\    'guifgs':   ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\    'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\    'operators': '_,_',
+\    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\    'separately': {
+\        '*': {},
+\        'tex': {
+\            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\        },
+\        'lisp': {
+\            'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+\        },
+\        'vim': {
+\            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+\        },
+\        'html': {
+\            'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+\        },
+\        'css': 0,
+\    }
+\}
