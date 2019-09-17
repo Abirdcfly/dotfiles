@@ -92,6 +92,7 @@ set expandtab
 set autoindent "按回车后与上一行缩进保持一致
 set fileformat=unix
 set cursorline "光标所在行高亮
+set scrolloff=8 "光标上下始终有8行
 
 "set mapleader
 let mapleader = ","
