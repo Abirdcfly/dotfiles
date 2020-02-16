@@ -64,15 +64,22 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  tmux
-  git
-  colored-man-pages
-  extract
-  autojump
-  zsh-autosuggestions
-  vi-mode
-  svn
-  git-open
+    tmux
+    git
+    colored-man-pages
+    extract
+    autojump
+    zsh-autosuggestions
+    vi-mode
+    svn
+    git-open
+    kubectl
+    minikube
+    pipenv
+    virtualenv
+    docker
+    fast-syntax-highlighting
+    you-should-use
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -126,15 +133,16 @@ prompt_svn() {
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias proxy='export http_proxy=http://127.0.0.1:1081;export https_proxy=$http_proxy;export all_proxy=$http_proxy'
 export PATH=${PATH}:/usr/local/sbin
+alias t="open -a Typora.app"
 alias tbjconfig="ssh tbjconfig"
 alias disproxy='unset http_proxy https_proxy all_proxy'
 
-export GOROOT="$(brew --prefix golang)/libexec"
+export GOROOT=/usr/local/opt/go/libexec
 export GOBIN=$GOROOT/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin:$GOBIN
 alias gl='GOOS=linux GOARCH=amd64 go build -v'
-alias mysqll='mycli -uroot -h localhost'
+alias mysqll='mycli -uroot -h localhost -pgzgzgz'
 #alias top='htop'
 #alias diff='icdiff'
 alias ip='curl ip.cn'
@@ -155,21 +163,58 @@ alias tf="open -a Finder ./"
 alias cman='man -M /usr/local/share/man/zh_CN'
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles #替换为清华源
 alias vimtmux="vim ~/.tmux.conf"
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export GOPROXY=https://goproxy.cn
 
 # Customise the Powerlevel9k prompts
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time battery ssh dir vcs status background_jobs_joined command_execution_time go_version)  #左边符号
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time battery ssh dir vcs status background_jobs_joined command_execution_time go_version virtualenv)  #左边符号
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode)    # 右边显示zsh 的vi_mode
 POWERLEVEL9K_STATUS_OK=false  #status正常是大部分情况,不需要显示图标
 POWERLEVEL9K_VI_INSERT_MODE_STRING='' #正常情况下zsh都在Insert模式下.不需要显示INSERT干扰注意力
 POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD=90  # 电量90以下在显示
+POWERLEVEL9K_BATTERY_LOW_THRESHOLD=20  # 20的电量就是Low了。颜色会变
 
 source $(dirname $(gem which colorls))/tab_complete.sh  # https://github.com/athityakumar/colorls
+bindkey '^n' autosuggest-accept #zshautosuggestion 选定快捷键
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# sshpass
+export SSHPASS=root
+
+# 自定义alias
 alias lc='colorls -lA --sd'
 alias rm="rm -i"
 alias c="code ."
 alias gc="git cz"
-alias cl="source ~/.zshrc && clear"
-alias up="upgrade_oh_my_zsh; brew update -v; brew upgrade -v; brew cask upgrade -v; brew cleanup -v"
+alias cl="source ~/.zshrc; clear"
+alias up="upgrade_oh_my_zsh; brew update -v; brew upgrade -v; brew cask upgrade -v; brew cleanup -v; help --update"
+alias gitdiffw="git diff --ignore-space-change"
+alias vim="nvim"
+alias rm='safe-rm'
+alias gst='git status --ignored'
+alias ll='ls -ltrh'
+alias kd='kubectl describe'
+alias sshp="sshpass -e ssh"
+alias ms='proxy && minikube start --registry-mirror=https://docker.mirrors.ustc.edu.cn --memory=8192 --cpus=6 --kubernetes-version=v1.14.3 --disk-size=30g --extra-config=apiserver.enable-admission-plugins="LimitRanger,NamespaceExists,NamespaceLifecycle,ResourceQuota,ServiceAccount,DefaultStorageClass,MutatingAdmissionWebhook" --docker-env NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,10.0.2.0/24,192.168.64.0/24,172.17.0.0/24 --docker-env HTTP_PROXY=http://192.168.64.1:1081 --docker-env HTTPS_PROXY=http://192.168.64.1:1081 --cache-images --insecure-registry=192.168.64.1:5000 --vm-driver=hyperkit'
+alias cg='curl -v google.com'
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+alias rmrf='rm -rf'
+
+# 自定义环境变量
+export PATH="$PATH:/Users/fupeng/DataSync/Work/knative/istio-1.3.5/bin"
+export KUBECONFIG="$HOME/.kube/minikube.config:$HOME/.kube/kind.config:$HOME/.kube/151.config:$HOME/.kube/ent.config:$HOME/.kube/136.config:$HOME/.kube/93.config:$HOME/.kube/111.config"
+export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24,192.168.64.0/24,172.17.0.0/24
+ulimit -S -n 10240
+if (( ! ${fpath[(I)/usr/local/share/zsh/site-functions]} )); then
+  FPATH=/usr/local/share/zsh/site-functions:$FPATH
+fi
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+
+
+# 自定义函数
+fm() {
+  ag --nobreak --nonumbers --noheading --markdown . | grep "$1" | fzf
+}
