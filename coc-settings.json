@@ -8,6 +8,18 @@
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
+    },
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "initializationOptions": {
+        "cache": {
+           "directory": "/tmp/ccls"
+         },
+        "highlight": {
+            "lsRanges" : true }
+       }
     }
   },
   "snippets.ultisnips.directories": [
@@ -31,5 +43,10 @@
     "<C-v>": "action:vsplit",
     "<C-s>": "action:split",
     "<C-w>": "command:wincmd k"
-  }
+  },
+  "yaml.format.enable": true,
+  "yaml.validate":false,
+  "yaml.hover":true,
+  "yaml.completion": true,
+  "yaml.schemas":{"kubernetes":"*.yaml"}
 }
