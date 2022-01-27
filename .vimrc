@@ -79,8 +79,8 @@ set wildmenu "显示候选项菜单
 set autoread "打开文件监视。如果在编辑过程中文件发生外部改变（比如被别的编辑器编辑了），就会发出提示。
 set showcmd "显示输入的命令
 set encoding=utf-8 "默认编码
-set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1 "默认编码
-" set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latinr
+" set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1 "默认编码
+set fileencodings=ucs-bom,utf-8,gb18030,latin1
 set noerrorbells "vim 不要发声
 set vb t_vb= "也是不发声，不过是类似按ESC这种不显示错误信息的指令不发声
 set noswapfile "不使用swap file
@@ -91,6 +91,7 @@ set autowrite "某些命令执行前自动保存，比如:next, :make 命令
 set noshowmode "只在airline显示mode就可以了，命令行就不必了
 set showmatch "光标遇到括号时自动高亮对应括号
 let g:rehash256 = 1  "显示256色
+set colorcolumn=120
 
 set tabstop=4
 set softtabstop=4
@@ -158,6 +159,9 @@ autocmd bufenter * silent! lcd %:p:h
 "记录undo历史
 set undofile
 set undodir=~/.vim/undodir
+if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p', 0700)
+endif
 "undotree 设置
 nnoremap <leader>u :UndotreeToggle<cr>
 
@@ -294,7 +298,7 @@ let g:go_debug_windows = {
             \ 'vars':  'leftabove 30vnew',
             \ }
 "重复使用buffer。go-def-split复用同一个窗口
-let g:go_def_reuse_buffer = 0
+let g:go_def_reuse_buffer = 1
 au filetype go nmap <f12> <plug>(go-debug-stepout)
 
 "nerdtree设置
@@ -341,7 +345,13 @@ let g:pymode_run_bind = '<leader>r'
 
 "EasyMotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" ,,ab 来找到ab开头的字
 nmap <leader><leader> <Plug>(easymotion-overwin-f2)
+" 智能大小写,小写字母同时匹配大小写，大写字母只匹配大写
+let g:EasyMotion_smartcase = 1
+"
+" map <Leader>j <Plug>(easymotion-j)
+" map <Leader>k <Plug>(easymotion-k)"
 
 "coc.nvim 设置
 let g:coc_global_extensions =['coc-snippets','coc-python','coc-highlight','coc-lists','coc-tabnine','coc-yank']
